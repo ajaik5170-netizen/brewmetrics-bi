@@ -1,0 +1,62 @@
+table Dim_Date
+	lineageTag: 480573b4-435e-40b6-895a-fad102c472c3
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2582e9d6-381b-4b15-807a-b39cbb4cdde9
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 8da2ec7f-41a7-4aab-a567-fc9e8723609f
+			defaultHierarchy: LocalDateTable_e5811013-14df-47b0-95d8-28d7ff3785d1.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 86cf67f3-2850-4f31-a0cf-e275e84e417d
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 73e6fab0-63fe-43f8-b13f-d71412d4e8ec
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: de2dba24-ca40-4119-a7a4-41bcfc0ebb50
+		summarizeBy: none
+		sourceColumn: Month Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Date = m
+		mode: import
+		source =
+				let
+				    Source = Fact_Sales,
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"sale_id", "store_format", "city", "category", "item", "quantity", "unit_price", "sales_amount"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Columns"),
+				    #"Inserted Year" = Table.AddColumn(#"Removed Duplicates", "Year", each Date.Year([date]), Int64.Type),
+				    #"Inserted Month" = Table.AddColumn(#"Inserted Year", "Month", each Date.Month([date]), Int64.Type),
+				    #"Inserted Month Name" = Table.AddColumn(#"Inserted Month", "Month Name", each Date.MonthName([date]), type text)
+				in
+				    #"Inserted Month Name"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
