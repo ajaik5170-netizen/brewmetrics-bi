@@ -1,6 +1,67 @@
 table Fact_Sales
 	lineageTag: ed033f7b-7999-4929-88d4-27a1db2fb8d2
 
+	measure 'Total Sales' =
+			
+			SUM(Fact_Sales[sales_amount])
+		lineageTag: 14701c2d-ffb0-45fe-b809-bda173249956
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Growth %' =
+			
+			VAR CurrentSales = [Total Sales]
+			VAR PreviousSales =
+			    CALCULATE(
+			        [Total Sales],
+			        DATEADD(Dim_Date[date], -1, MONTH)
+			    )
+			RETURN
+			    DIVIDE(CurrentSales - PreviousSales, PreviousSales)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 68f5a217-3b2a-44b1-aa64-863a08f34f32
+
+	measure 'Average Sale Value' =
+			
+			DIVIDE(
+			    [Total Sales],
+			    DISTINCTCOUNT(Fact_Sales[sale_id])
+			)
+		lineageTag: cbe0c45d-3a6b-4da9-be12-133dd7c8e33d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Quantity' =
+			
+			SUM(Fact_Sales[quantity])
+		formatString: 0
+		lineageTag: 5c9b6635-adbe-43fb-b34c-a68560f8806e
+
+	measure 'Running Total Sales' =
+			
+			CALCULATE(
+			    [Total Sales],
+			    FILTER(
+			        ALL(Dim_Date[date]),
+			        Dim_Date[date] <= MAX(Dim_Date[date])
+			    )
+			)
+		lineageTag: 9e06ce68-a4f1-4f03-8791-4080d673f02f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Product Sales Rank' =
+			
+			RANKX(
+			    ALL(Dim_Product[item]),
+			    [Total Sales],
+			    ,
+			    DESC,
+			    DENSE
+			)
+		formatString: 0
+		lineageTag: 0b00b2d3-e74f-4c76-882a-846d45df0d6d
+
 	column sale_id
 		dataType: int64
 		formatString: 0
@@ -16,11 +77,6 @@ table Fact_Sales
 		lineageTag: 7a300e92-4d31-4795-a3e6-a726ec867d5e
 		summarizeBy: none
 		sourceColumn: date
-
-		variation Variation
-			isDefault
-			relationship: a80bdb0a-9047-4d4e-96da-458b1bc01a60
-			defaultHierarchy: LocalDateTable_9d99a7f1-79ef-409a-ba46-3c9d6539cbb1.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 
