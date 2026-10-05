@@ -1,0 +1,7 @@
+# Reflection
+
+Throughout the BrewMetrics BI project, Copilot was useful for accelerating the development of the Power BI semantic model and DAX measures. Its suggestions were directly usable for several basic measures, such as Total Sales, Total Quantity, Average Sale Value, Sales Growth %, Running Total Sales, and Product Sales Rank. Copilot also helped provide ideas for organizing the dashboard and presenting the business analysis clearly.
+
+However, Copilot suggestions were not always accurate and required verification against the actual data model and dashboard. Some generated DAX logic needed correction to work correctly with the relationships, date fields, and required filtering conditions. The Cold Brew analysis also required checking the actual visual results rather than blindly accepting generated descriptions. This made it important to test each measure and confirm that the output matched the intended business question.
+
+Working with the full Git commit history changed my approach compared with a normal single-file Power BI lab. Instead of building everything at once, I had to think about the project as a sequence of controlled stages: first creating the schema, then developing DAX measures, and finally building the report and dashboard. The commit history provided a clear record of progress and made it easier to identify what changed at each stage. Overall, version control encouraged a more organized and disciplined development process.
