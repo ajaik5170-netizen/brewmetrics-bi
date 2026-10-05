@@ -4,10 +4,10 @@
   "position": {
     "x": 59.183673469387756,
     "y": 463.265306122449,
-    "z": 1,
+    "z": 1000,
     "height": 232.65306122448979,
     "width": 491.83673469387759,
-    "tabOrder": 1
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -71,37 +71,5 @@
       }
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "1fe68a9215673b3ce1ae",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Fact_Sales"
-              }
-            },
-            "Property": "city"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "9691ac249423eaf9fccc",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Fact_Sales"
-              }
-            },
-            "Property": "Total Sales"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
